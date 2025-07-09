@@ -43,6 +43,8 @@ make migrate-up
  go tool templ generate
 ```
 
+-> See [this](https://github.com/TKSpectro/go-todo-api/commit/d1f6669f91de0297d28bc0321b616a922e640957)
+
 
 5. Run the server
 
