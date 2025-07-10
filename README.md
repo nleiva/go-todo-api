@@ -69,8 +69,8 @@ CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 3. **Install dependencies and generate templates**
    ```bash
    go mod download
-   go install github.com/a-h/templ/cmd/templ@latest
-   templ generate
+   go get -tool github.com/a-h/templ/cmd/templ@latest
+   go tool templ generate
    ```
 
 4. **Start the server**
@@ -230,9 +230,7 @@ This project uses [TEMPL](https://templ.guide/) for type-safe HTML templates tha
 
 Generate template files after making changes:
 ```bash
-templ generate
-# or using the Make command
-make templ-generate
+go tool templ generate
 ```
 
 ### Frontend Technologies
@@ -282,10 +280,6 @@ We welcome contributions! Please follow these steps:
 - Update documentation for API changes
 - Use conventional commit messages
 - Ensure all tests pass before submitting
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
