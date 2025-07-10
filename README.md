@@ -2,41 +2,21 @@
 
 Borrowing https://github.com/TKSpectro/go-todo-api
 
-### Prerequisites
-
-- [Go](https://golang.org/)
-- [Docker](https://www.docker.com/) (optional) - for running the database
-- [Make](https://www.gnu.org/software/make/) (optional) - for running the Makefile commands (shortcuts for other commands)
-- [Air](https://github.com/cosmtrek/air/) (optional) - for hot reloading while developing
-- [Ginkgo](https://onsi.github.io/ginkgo/) (optional) - for running the tests
-
 ### Getting started
 
-1. Clone the repository
-
-```bash
-git clone
-```
-
-2. Install dependencies
-
-```bash
-go mod download
-```
-
-3. Create a `.env` file in the root of the project by copying the `.env.example` file and filling in the correct values
+1. Create a `.env` file in the root of the project by copying the `.env.example` file and filling in the correct values
 
 ```bash
 cp .env.example .env
 ```
 
-4. Run the migrations
+2. Run the migrations (not necessary for in-memory SQlite)
 
 ```bash
 make migrate-up
 ```
 
-5. Generate the [TEMPL](https://templ.guide/) files
+3. Generate the [TEMPL](https://templ.guide/) files
 
 ```bash
  go get -tool github.com/a-h/templ/cmd/templ@latest
@@ -45,19 +25,12 @@ make migrate-up
 
 -> See [this](https://github.com/TKSpectro/go-todo-api/commit/d1f6669f91de0297d28bc0321b616a922e640957)
 
-
-5. Run the server
+4. Run the server
 
 ```bash
 make run
 # or (if you have Air installed)
 air
-```
-
-6. Atlas ?
-
-```bash
-curl -sSf https://atlasgo.sh | sh
 ```
 
 ## Knowledge base
@@ -78,23 +51,47 @@ Because these will use a struct under the hood, we also want to overwrite the sw
 
 ### Migrations
 
-We use [Atlas](https://atlasgo.io/) for schema based migrations.
-Because we use GORM as our ORM, we can use the <https://atlasgo.io/guides/orms/gorm> package to generate migrations directly from our models.
-The configuration for this happens in `atlas.hcl` and `loader/atlasGorm.go`
+#### SQlite
 
-We wrap the most common Atlas commands in the Makefile, so that we can easily run them.
-The commands are:
+In-memory, done at runtime
+
+#### MySQL
+
+We can generate the schema migration code with [Atlas](https://atlasgo.io/). GORM does this directly from the models defined in this package. See [`loader/atlasGorm.go`](loader/atlasGorm.go) and [`atlas.hcl`](atlas.hcl) for details.
+
+Atlas installation:
 
 ```bash
-# Generate a new migration file based on the current models
+curl -sSf https://atlasgo.sh | sh
+```
+
+##### Generate a new migration file based on the current models
+
+```bash
 make migrate-gen name=<migration-name>
+```
+##### Generate a new empty migration file
 
-# Generate a new empty migration file
+```bash
 make migrate-new name=<migration-name>
+```
 
-# Apply all migrations up to the latest version
+##### Apply all migrations up to the latest version
+
+```bash
 make migrate-up
+```
 
-# Reverse all migrations down to the given version (version is the timestamp of the migration file)
+##### Reverse all migrations down to the given version (version is the timestamp of the migration file)
+
+```bash
 make migrate-down version=<version>
 ```
+
+### Prerequisites
+
+- [Go](https://golang.org/)
+- [Docker](https://www.docker.com/) (optional) - for running the database
+- [Make](https://www.gnu.org/software/make/) (optional) - for running the Makefile commands (shortcuts for other commands)
+- [Air](https://github.com/cosmtrek/air/) (optional) - for hot reloading while developing
+- [Ginkgo](https://onsi.github.io/ginkgo/) (optional) - for running the tests
