@@ -26,7 +26,7 @@ templ layout(data BaseData) {
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="/js/main.js"></script>
         </head>
-        <body>
+        <body class="bg-gray-50 min-h-screen">
             @navigation(data)
             { children... }
         </body>
@@ -72,9 +72,145 @@ templ navigation(data BaseData){
 
 templ IndexPage(data BaseData){
     @layout(data){
-        <div class="flex items-center justify-center my-4">
-            <div class="text-7xl text-center">go-todo-api</div>
+        <!-- Hero Section -->
+        <div class="relative overflow-hidden">
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-50 via-white to-cyan-50"></div>
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmOWZhZmIiIGZpbGwtb3BhY2l0eT0iMC40Ij48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxLjUiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-40"></div>
+            
+            <div class="relative max-w-7xl mx-auto px-4 py-16 sm:py-24 lg:py-32">
+                <div class="text-center">
+                    <!-- Main Title -->
+                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-7xl">
+                        <span class="block">Welcome to</span>
+                        <span class="block bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                            go-todo-api
+                        </span>
+                    </h1>
+                    
+                    <!-- Subtitle -->
+                    <p class="mt-6 max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 leading-relaxed">
+                        A modern, fast, and secure todo management API built with Go. 
+                        Organize your tasks, boost your productivity, and stay on top of your goals.
+                    </p>
+                    
+                    <!-- Action Buttons -->
+                    <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                        if data.IsAuthenticated {
+                            <a
+                                href="/todos"
+                                class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                            >
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                                View My Todos
+                            </a>
+                        } else {
+                            <a
+                                href="/register"
+                                class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200 shadow-lg hover:shadow-xl"
+                            >
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                                </svg>
+                                Get Started
+                            </a>
+                            <a
+                                href="/login"
+                                class="inline-flex items-center justify-center px-8 py-3 border-2 border-indigo-600 text-base font-medium rounded-lg text-indigo-600 bg-white hover:bg-indigo-50 transition-colors duration-200"
+                            >
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+                                </svg>
+                                Sign In
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <!-- Features Section -->
+        <div class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose go-todo-api?</h2>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                        Built with modern technologies and best practices for a superior todo management experience.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Lightning Fast</h3>
+                        <p class="text-gray-600">
+                            Built with Go for exceptional performance and low latency. Handle thousands of todos without breaking a sweat.
+                        </p>
+                    </div>
+                    
+                    <!-- Feature 2 -->
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Secure & Reliable</h3>
+                        <p class="text-gray-600">
+                            JWT authentication, secure password hashing, and robust error handling keep your data safe and sound.
+                        </p>
+                    </div>
+                    
+                    <!-- Feature 3 -->
+                    <div class="text-center p-6">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Modern Interface</h3>
+                        <p class="text-gray-600">
+                            Clean, responsive design with HTMX for seamless interactions. Beautiful UI that works on all devices.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        if data.IsAuthenticated {
+            <div class="bg-gray-50 py-12">
+                <div class="max-w-7xl mx-auto px-4">
+                    <div class="text-center">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-8">Welcome back, { data.Account.Firstname }!</h2>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            <div class="bg-white rounded-lg p-6 shadow-sm">
+                                <div class="text-3xl font-bold text-indigo-600 mb-2">✨</div>
+                                <div class="text-sm text-gray-600">Ready to be</div>
+                                <div class="text-lg font-semibold text-gray-900">Productive</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-sm">
+                                <div class="text-3xl font-bold text-green-600 mb-2">🚀</div>
+                                <div class="text-sm text-gray-600">Stay</div>
+                                <div class="text-lg font-semibold text-gray-900">Organized</div>
+                            </div>
+                            <div class="bg-white rounded-lg p-6 shadow-sm">
+                                <div class="text-3xl font-bold text-purple-600 mb-2">🎯</div>
+                                <div class="text-sm text-gray-600">Achieve your</div>
+                                <div class="text-lg font-semibold text-gray-900">Goals</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     }
 }
 
@@ -158,32 +294,78 @@ templ LoginPage(data BaseData){
 
 templ TodosIndexPage(data BaseData, todos []model.Todo){
     @layout(data){
-        <div>
-            <form hx-post="/todos" hx-swap="afterbegin" hx-target="#todo-list">
-                <label for="title">Create a new todo:</label>
-                <input type="text" name="title" class="border" required />
-                <button type="submit">+</button>
-            </form>
-        </div>
+        <div class="max-w-4xl mx-auto px-4 py-8">
+            <!-- Header Section -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">My Todos</h1>
+                <p class="text-gray-600">Organize your tasks and stay productive</p>
+            </div>
 
-        <div>
-            <ul id="filters" class="flex space-x-2 my-4 ml-2">
-                <a href="/todos"
-                    ><li class="py-2 px-4 border rounded hover:bg-gray-200">All</li></a>
+            <!-- Add Todo Form -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                <form hx-post="/todos" hx-swap="afterbegin" hx-target="#todo-list" class="flex gap-3">
+                    <div class="flex-1">
+                        <label for="title" class="sr-only">Create a new todo</label>
+                        <input 
+                            type="text" 
+                            name="title" 
+                            id="title"
+                            placeholder="What needs to be done?" 
+                            required 
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-gray-900 placeholder-gray-500"
+                        />
+                    </div>
+                    <button 
+                        type="submit"
+                        class="px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors duration-200"
+                    >
+                        Add Todo
+                    </button>
+                </form>
+            </div>
 
-                <a href="/todos?filter[completed]=0">
-                    <li class="py-2 px-4 border rounded hover:bg-gray-200">Active</li>
-                </a>
-
-                <a href="/todos?filter[completed]=1">
-                    <li class="py-2 px-4 border rounded hover:bg-gray-200">
+            <!-- Filter Tabs -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                <nav class="flex" aria-label="Tabs">
+                    <a 
+                        href="/todos"
+                        class="flex-1 py-4 px-1 text-center border-b-2 border-indigo-500 font-medium text-sm text-indigo-600"
+                    >
+                        All Tasks
+                    </a>
+                    <a 
+                        href="/todos?filter[completed]=0"
+                        class="flex-1 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-colors duration-200"
+                    >
+                        Active
+                    </a>
+                    <a 
+                        href="/todos?filter[completed]=1"
+                        class="flex-1 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-colors duration-200"
+                    >
                         Completed
-                    </li>
-                </a>
-            </ul>
-        </div>
+                    </a>
+                </nav>
+            </div>
 
-        <div id="todo-list" class="container">@todoList(todos)</div>
+            <!-- Todo List -->
+            <div id="todo-list" class="space-y-2">
+                @todoList(todos)
+            </div>
+
+            <!-- Empty State -->
+            if len(todos) == 0 {
+                <div class="text-center py-12">
+                    <div class="w-24 h-24 mx-auto mb-4 flex items-center justify-center bg-gray-100 rounded-full">
+                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No todos yet</h3>
+                    <p class="text-gray-500">Get started by creating your first todo above.</p>
+                </div>
+            }
+        </div>
     }
 }
 
@@ -194,28 +376,91 @@ templ todoList(todos []model.Todo){
 }
 
 templ TodoItem(todo model.Todo){
-    <div class="todo border-gray-900 border my-2 rounded-lg">
-        <div class="id">{ strconv.FormatUint(uint64(todo.ID), 10) }</div>
-        <div class="title">{ todo.Title.String }</div>
-        @TodoCompleteToggle(todo)
-        <button
-            hx-delete={"/todos/"+strconv.FormatUint(uint64(todo.ID), 10)}
-            hx-confirm="Are you sure?"
-            hx-target="closest .todo"
-            hx-swap="outerHTML"
-        >
-            Delete
-        </button>
+    <div class="todo bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3 flex-1">
+                <!-- Checkbox -->
+                @TodoCompleteToggle(todo)
+                
+                <!-- Todo Content -->
+                <div class="flex-1 min-w-0">
+                    <div class={
+                        "text-lg font-medium transition-colors duration-200",
+                        templ.KV("text-gray-900", !todo.Completed),
+                        templ.KV("text-gray-500 line-through", todo.Completed)
+                    }>
+                        { todo.Title.String }
+                    </div>
+                    if todo.Description.Valid && todo.Description.String != "" {
+                        <div class={
+                            "text-sm mt-1 transition-colors duration-200",
+                            templ.KV("text-gray-600", !todo.Completed),
+                            templ.KV("text-gray-400 line-through", todo.Completed)
+                        }>
+                            { todo.Description.String }
+                        </div>
+                    }
+                </div>
+
+                <!-- Status Badge -->
+                if todo.Completed {
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        Completed
+                    </span>
+                } else {
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                        </svg>
+                        Pending
+                    </span>
+                }
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center space-x-2 ml-4">
+                <button
+                    hx-delete={"/todos/"+strconv.FormatUint(uint64(todo.ID), 10)}
+                    hx-confirm="Are you sure you want to delete this todo?"
+                    hx-target="closest .todo"
+                    hx-swap="outerHTML"
+                    class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+                    title="Delete todo"
+                >
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
     </div>
 }
 
 templ TodoCompleteToggle(todo model.Todo){
-    <input
-        type="checkbox"
-        hx-put={"/todos/"+strconv.FormatUint(uint64(todo.ID), 10)+"/complete"}
-        hx-swap="outerHTML"
-        checked?={ todo.Completed }
-    />
+    <label class="relative flex items-center cursor-pointer">
+        <input
+            type="checkbox"
+            hx-put={"/todos/"+strconv.FormatUint(uint64(todo.ID), 10)+"/complete"}
+            hx-swap="outerHTML"
+            hx-target="closest .todo"
+            checked?={ todo.Completed }
+            class="sr-only"
+        />
+        <div class={
+            "w-5 h-5 border-2 rounded transition-all duration-200 flex items-center justify-center",
+            templ.KV("border-gray-300 bg-white", !todo.Completed),
+            templ.KV("border-indigo-600 bg-indigo-600", todo.Completed)
+        }>
+            if todo.Completed {
+                <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                </svg>
+            }
+        </div>
+    </label>
 }
 
 templ RegisterPage(data BaseData){
