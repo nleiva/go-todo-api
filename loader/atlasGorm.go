@@ -10,7 +10,8 @@ import (
 )
 
 func main() {
-	stmts, err := gormschema.New("mysql").Load(&model.Account{}, &model.Todo{})
+	// stmts, err := gormschema.New("mysql").Load(&model.Account{}, &model.Todo{})
+	stmts, err := gormschema.New("sqlite").Load(&model.Account{}, &model.Todo{})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to load gorm schema: %v\n", err)
 		os.Exit(1)

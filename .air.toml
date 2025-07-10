@@ -4,7 +4,7 @@ tmp_dir = "./tmp"
 [build]
   cmd = """\
     swag init -o ./api; \
-    templ generate; \
+    go tool templ generate; \
     go build -o ./tmp/main .; \
   """
   bin = "./tmp/main"

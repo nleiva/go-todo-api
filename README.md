@@ -1,6 +1,6 @@
 # Go TODO app
 
-Borrowing https://github.com/nleiva/go-todo-api
+Borrowing https://github.com/TKSpectro/go-todo-api
 
 ### Prerequisites
 
@@ -52,6 +52,12 @@ make migrate-up
 make run
 # or (if you have Air installed)
 air
+```
+
+6. Atlas ?
+
+```bash
+curl -sSf https://atlasgo.sh | sh
 ```
 
 ## Knowledge base

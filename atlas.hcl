@@ -10,7 +10,8 @@ data "external_schema" "gorm" {
 # This environment is used for generating the migrations based on the gorm schemas
 env "gorm" {
   src = data.external_schema.gorm.url
-  dev = "docker://maria/latest/dev"
+  #dev = "docker://maria/latest/dev"
+  dev = "sqlite://dev?mode=memory"
   migration {
     dir = "file://migrations?format=golang-migrate"
   }
@@ -23,8 +24,10 @@ env "gorm" {
 
 # This environment is used for local development. See: https://atlasgo.io/concepts/dev-database
 env "local" {
-    url = "maria://root:root@localhost:3307/go_api"
-    dev = "docker://maria/latest/dev"
+    #url = "maria://root:root@localhost:3307/go_api"
+    url = "sqlite://file?mode=memory&cache=shared&_fk=1"
+    #dev = "docker://maria/latest/dev"
+    dev = "sqlite://dev?mode=memory"
     migration {
         dir = "file://migrations?format=golang-migrate"
     }

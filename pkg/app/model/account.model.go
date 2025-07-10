@@ -3,11 +3,12 @@ package model
 import (
 	"github.com/nleiva/go-todo-api/utils"
 
+	"gorm.io/gorm"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type Account struct {
-	BaseModel
+	gorm.Model
 	Email       string `gorm:"uniqueIndex;not null" json:"email" x-search:"true" validate:"required,email"`
 	Password    string `gorm:"not null" json:"-"`
 	Firstname   string `gorm:"" json:"firstname" x-search:"true"`

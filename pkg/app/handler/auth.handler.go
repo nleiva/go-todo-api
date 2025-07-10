@@ -110,7 +110,8 @@ func (h *Handler) Refresh(c *fiber.Ctx) error {
 
 	account := &model.Account{}
 	if err := h.db.Model(account).Take(account, &model.Account{
-		BaseModel:   model.BaseModel{ID: tokenPayload.AccountID},
+		Model:   gorm.Model{ID: tokenPayload.AccountID},
+		//BaseModel:   model.BaseModel{ID: tokenPayload.AccountID},
 		TokenSecret: tokenPayload.Secret,
 	}).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {

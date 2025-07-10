@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"time"
 
+	"gorm.io/gorm"
 	"gopkg.in/guregu/null.v4"
 	"gopkg.in/guregu/null.v4/zero"
 )
 
 type Todo struct {
-	BaseModel
+	gorm.Model
 	Title       zero.String `gorm:"not null" json:"title" x-search:"true" swaggertype:"string" validate:"required,min=1"`
 	Description zero.String `gorm:"" json:"description" x-search:"true" swaggertype:"string"`
 	Completed   bool        `gorm:"default:false" json:"completed"`

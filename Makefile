@@ -14,13 +14,14 @@ docker-down:
 ################################ Go shortcuts ##################################
 ################################################################################
 
+# go-sqlite3 requires cgo to work
 .PHONY: build
 build:
-	go build -o ./tmp/make_build ./main.go
+	CGO_ENABLED=1 go build -o ./tmp/make_build ./main.go
 
 .PHONY: run
 run:
-	go run ./main.go
+	./tmp/make_build 
 
 .PHONY: build-run
 build-run: build run
