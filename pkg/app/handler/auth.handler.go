@@ -3,12 +3,12 @@ package handler
 import (
 	"errors"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/nleiva/go-todo-api/pkg/app/model"
 	"github.com/nleiva/go-todo-api/pkg/app/types"
 	"github.com/nleiva/go-todo-api/pkg/jwt"
 	"github.com/nleiva/go-todo-api/pkg/middleware/locals"
 	"github.com/nleiva/go-todo-api/utils"
-	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
@@ -110,7 +110,7 @@ func (h *Handler) Refresh(c *fiber.Ctx) error {
 
 	account := &model.Account{}
 	if err := h.db.Model(account).Take(account, &model.Account{
-		Model:   gorm.Model{ID: tokenPayload.AccountID},
+		Model: gorm.Model{ID: tokenPayload.AccountID},
 		//BaseModel:   model.BaseModel{ID: tokenPayload.AccountID},
 		TokenSecret: tokenPayload.Secret,
 	}).Error; err != nil {

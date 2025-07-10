@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"gorm.io/gorm"
 	"gopkg.in/guregu/null.v4"
 	"gopkg.in/guregu/null.v4/zero"
+	"gorm.io/gorm"
 )
 
 type Todo struct {

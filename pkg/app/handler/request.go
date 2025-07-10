@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"github.com/nleiva/go-todo-api/utils"
 	"github.com/gofiber/fiber/v2"
+	"github.com/nleiva/go-todo-api/utils"
 )
 
 func ParseBody(c *fiber.Ctx, body interface{}) *utils.RequestError {

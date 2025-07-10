@@ -3,9 +3,9 @@ package model_test
 import (
 	"testing"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/nleiva/go-todo-api/pkg/app"
 	"github.com/nleiva/go-todo-api/test"
-	"github.com/gofiber/fiber/v2"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 	"gorm.io/gorm"

@@ -8,10 +8,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/nleiva/go-todo-api/config"
 	"github.com/google/uuid"
 	"github.com/lestrrat-go/jwx/v2/jwa"
 	"github.com/lestrrat-go/jwx/v2/jwk"
+	"github.com/nleiva/go-todo-api/config"
 )
 
 type JWK_DATA struct {

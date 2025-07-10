@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"github.com/nleiva/go-todo-api/config"
-	"github.com/nleiva/go-todo-api/pkg/middleware"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
+	"github.com/nleiva/go-todo-api/config"
+	"github.com/nleiva/go-todo-api/pkg/middleware"
 )
 
 // New registers all routes for the application

@@ -4,6 +4,9 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/a-h/templ"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"github.com/nleiva/go-todo-api/pkg/app/model"
 	"github.com/nleiva/go-todo-api/pkg/app/types"
 	"github.com/nleiva/go-todo-api/pkg/app/types/pagination"
@@ -11,9 +14,6 @@ import (
 	"github.com/nleiva/go-todo-api/pkg/middleware/locals"
 	"github.com/nleiva/go-todo-api/pkg/view"
 	"github.com/nleiva/go-todo-api/utils"
-	"github.com/a-h/templ"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/adaptor"
 	"gorm.io/gorm"
 )
 

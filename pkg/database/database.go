@@ -44,7 +44,12 @@ func connect(dsn string) *gorm.DB {
 		panic(err)
 	}
 
-	//db := &gorm.DB{}
+	// Added this for in-memory migration
+	err = db.AutoMigrate(&model.Account{}, &model.Todo{})
+	if err != nil {
+		log.Println("[DATABASE]::MIGRATION_ERROR")
+		panic(err)
+	}
 
 	return db
 }

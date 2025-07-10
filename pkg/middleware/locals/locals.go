@@ -1,9 +1,9 @@
 package locals
 
 import (
+	"github.com/gofiber/fiber/v2"
 	"github.com/nleiva/go-todo-api/pkg/app/types/pagination"
 	"github.com/nleiva/go-todo-api/pkg/jwt"
-	"github.com/gofiber/fiber/v2"
 )
 
 const (

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/lestrrat-go/jwx/v2/jwa"
+	"github.com/lestrrat-go/jwx/v2/jwt"
 	"github.com/nleiva/go-todo-api/config"
 	"github.com/nleiva/go-todo-api/pkg/app/model"
 	"github.com/nleiva/go-todo-api/pkg/app/types"
 	"github.com/nleiva/go-todo-api/pkg/jwk"
 	"github.com/nleiva/go-todo-api/utils"
-	"github.com/lestrrat-go/jwx/v2/jwa"
-	"github.com/lestrrat-go/jwx/v2/jwt"
 )
 
 // TokenPayload defines the payload for the token

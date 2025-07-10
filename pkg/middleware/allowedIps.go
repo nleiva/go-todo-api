@@ -3,9 +3,9 @@ package middleware
 import (
 	"fmt"
 
+	"github.com/gofiber/fiber/v2"
 	"github.com/nleiva/go-todo-api/config"
 	"github.com/nleiva/go-todo-api/utils"
-	"github.com/gofiber/fiber/v2"
 )
 
 // AllowedIps is a middleware that checks if the request comes from an allowed IP

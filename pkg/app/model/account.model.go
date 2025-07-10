@@ -3,8 +3,8 @@ package model
 import (
 	"github.com/nleiva/go-todo-api/utils"
 
-	"gorm.io/gorm"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 type Account struct {

@@ -8,8 +8,8 @@ import (
 	"gopkg.in/guregu/null.v4"
 	"gopkg.in/guregu/null.v4/zero"
 
-	"github.com/nleiva/go-todo-api/utils"
 	"github.com/go-playground/validator/v10"
+	"github.com/nleiva/go-todo-api/utils"
 )
 
 type Validator struct {
