@@ -15,9 +15,18 @@ import (
 	"gorm.io/gorm"
 )
 
-// @title           fiber-api
+// @title           Go TODO API
 // @version         1.0
-// @BasePath  /api
+// @description     A modern, fast, and secure REST API for managing TODO items, built with Go, Fiber, GORM, and HTMX.
+// @contact.name    API Support
+// @contact.url     https://github.com/nleiva/go-todo-api
+// @host            localhost:3000
+// @BasePath        /api
+// @schemes         http https
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and JWT token.
 
 type backend interface {
 	Connect() error

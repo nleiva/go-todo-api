@@ -12,7 +12,7 @@ A modern, fast, and secure REST API for managing TODO items, built with Go, Fibe
 - **Interactive Experience**: Real-time updates without page refreshes
 - **Flexible Database**: Support for both SQLite (development) and MySQL (production)
 - **Well Tested**: Comprehensive test suite using Go's standard testing package
-- **API Documentation**: Auto-generated Swagger documentation
+- **API Documentation**: Auto-generated OpenAPI documentation with Swagger UI and Redoc
 - **Developer Friendly**: Hot reloading, easy setup, and comprehensive tooling
 
 ## Quick Start
@@ -95,7 +95,8 @@ Once the server is running, you can access:
 - **Register**: `http://localhost:3000/register` - Create a new account
 - **Login**: `http://localhost:3000/login` - Sign in to your account
 - **Todos**: `http://localhost:3000/todos` - Manage your todo items (after login)
-- **API Documentation**: `http://localhost:3000/swagger` - Interactive API documentation
+- **API Documentation**: `http://localhost:3000/api/docs` - Interactive Swagger UI documentation
+- **Redoc Documentation**: `http://localhost:3000/api/redoc` - Beautiful Redoc documentation
 
 ## Development
 
@@ -109,6 +110,7 @@ Once the server is running, you can access:
 | `make test` | Run all tests with SQLite |
 | `make test-v` | Run tests with verbose output |
 | `make test-coverage` | Run tests with coverage report |
+| `make docs` | Generate API documentation |
 | `make migrate-up` | Apply database migrations |
 | `make migrate-down` | Rollback database migrations |
 | `make docker-up` | Start Docker services (MySQL) |
@@ -117,8 +119,9 @@ Once the server is running, you can access:
 ### Project Structure
 
 ```
-├── api/                    # API documentation (Swagger)
+├── api/                    # API documentation (OpenAPI/Swagger)
 ├── config/                 # Configuration management
+├── docs/                   # Generated API documentation
 ├── loader/                 # Database initialization and schema generation
 ├── migrations/             # Database migration files
 ├── pkg/
@@ -255,10 +258,19 @@ Add `swaggertype:"string"` tags for proper API documentation.
 
 ### API Features
 - **RESTful endpoints** following OpenAPI 3.0 specification
-- **Auto-generated Swagger documentation** available at `/swagger`
+- **Auto-generated documentation** available via Swagger UI and Redoc
+- **Interactive API testing** with Swagger UI interface
+- **Beautiful documentation** with Redoc's clean design
 - **Request validation** using struct tags and custom validators
 - **Error handling** with consistent JSON error responses
 - **Pagination support** for large datasets
+
+Generate API documentation after making changes:
+```bash
+make docs
+# or directly with swag
+swag init --parseDependency --parseInternal --output docs
+```
 
 ## Contributing
 

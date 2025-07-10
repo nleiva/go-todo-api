@@ -48,13 +48,20 @@ test-coverage:
 	go tool cover -html=coverage.out
 
 ################################################################################
-################################ Swagger Docs ##################################
+################################ API Documentation #############################
 ################################################################################
 
-# Will generate swagger docs in ./api
+# Generate OpenAPI documentation
+.PHONY: docs
+docs:
+	swag init --parseDependency --parseInternal --output docs
+	cp docs/docs.go api/docs.go
+	cp docs/swagger.json api/swagger.json
+	cp docs/swagger.yaml api/swagger.yaml
+
+# Legacy target for backward compatibility
 .PHONY: swag
-swag:
-	swag init -o ./api
+swag: docs
 
 ################################################################################
 ######################## Atlas shortcuts (Migrations) ##########################

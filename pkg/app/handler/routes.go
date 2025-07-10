@@ -2,9 +2,9 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/swagger"
 	"github.com/nleiva/go-todo-api/config"
 	"github.com/nleiva/go-todo-api/pkg/middleware"
+	fiberSwagger "github.com/swaggo/fiber-swagger"
 )
 
 // New registers all routes for the application
@@ -41,7 +41,29 @@ func (h *Handler) RegisterApiRoutes(app *fiber.App) {
 		return c.SendString("Hello from base api path")
 	})
 
-	api.Get("/docs/*", swagger.HandlerDefault)
+	// Swagger UI documentation
+	api.Get("/docs/*", fiberSwagger.WrapHandler)
+
+	// Redoc documentation
+	api.Get("/redoc", func(c *fiber.Ctx) error {
+		return c.Type("html").SendString(`
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Documentation</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
+    <style>
+      body { margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+    <redoc spec-url='/api/docs/doc.json'></redoc>
+    <script src="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js"></script>
+</body>
+</html>`)
+	})
 
 	auth := api.Group("/auth")
 	auth.Put("/login", h.Login)
