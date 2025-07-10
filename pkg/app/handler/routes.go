@@ -25,6 +25,9 @@ func (h *Handler) RegisterHyperMediaRoutes(app *fiber.App) {
 	app.Post("/login", h.VLoginPost)
 	app.Post("/logout", h.VLogout)
 
+	app.Get("/register", h.VRegister)
+	app.Post("/register", h.VRegisterPost)
+
 	app.Get("/todos", middleware.Pagination, middleware.Protected, middleware.Pagination, h.VTodosIndex)
 	app.Post("/todos", middleware.Protected, h.VTodosCreate)
 	app.Put("/todos/:id/complete", middleware.Protected, h.VTodosComplete)

@@ -1,39 +1,57 @@
 package model_test
 
 import (
+	"testing"
+
 	"github.com/nleiva/go-todo-api/pkg/app/model"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Account.Model", func() {
-	Describe("WriteRemote", func() {
-		It("empty", func() {
-			account := model.Account{}
-			account.New(model.Account{})
+func TestAccountModelWriteRemote(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		account := model.Account{}
+		account.New(model.Account{})
 
-			Expect(account.Email).To(Equal(""))
-			Expect(account.Password).To(Equal(""))
-			Expect(account.Firstname).To(Equal(""))
-			Expect(account.Lastname).To(Equal(""))
-			Expect(account.TokenSecret).To(Equal(""))
-		})
-
-		It("with data", func() {
-			account := model.Account{}
-			account.New(model.Account{
-				Email:       "test@turbomeet.xyz",
-				Password:    "password",
-				Firstname:   "Firstname",
-				Lastname:    "Lastname",
-				TokenSecret: "token",
-			})
-
-			Expect(account.Email).To(Equal("test@turbomeet.xyz"))
-			Expect(account.Password).To(Equal("")) // Password should not be written
-			Expect(account.Firstname).To(Equal("Firstname"))
-			Expect(account.Lastname).To(Equal("Lastname"))
-			Expect(account.TokenSecret).To(Equal("")) // TokenSecret should not be written
-		})
+		if account.Email != "" {
+			t.Errorf("Expected Email to be empty, got %s", account.Email)
+		}
+		if account.Password != "" {
+			t.Errorf("Expected Password to be empty, got %s", account.Password)
+		}
+		if account.Firstname != "" {
+			t.Errorf("Expected Firstname to be empty, got %s", account.Firstname)
+		}
+		if account.Lastname != "" {
+			t.Errorf("Expected Lastname to be empty, got %s", account.Lastname)
+		}
+		if account.TokenSecret != "" {
+			t.Errorf("Expected TokenSecret to be empty, got %s", account.TokenSecret)
+		}
 	})
-})
+
+	t.Run("with data", func(t *testing.T) {
+		account := model.Account{}
+		account.New(model.Account{
+			Email:       "test@turbomeet.xyz",
+			Password:    "password",
+			Firstname:   "Firstname",
+			Lastname:    "Lastname",
+			TokenSecret: "token",
+		})
+
+		if account.Email != "test@turbomeet.xyz" {
+			t.Errorf("Expected Email to be 'test@turbomeet.xyz', got %s", account.Email)
+		}
+		if account.Password != "" {
+			t.Errorf("Expected Password to be empty (should not be written), got %s", account.Password)
+		}
+		if account.Firstname != "Firstname" {
+			t.Errorf("Expected Firstname to be 'Firstname', got %s", account.Firstname)
+		}
+		if account.Lastname != "Lastname" {
+			t.Errorf("Expected Lastname to be 'Lastname', got %s", account.Lastname)
+		}
+		if account.TokenSecret != "" {
+			t.Errorf("Expected TokenSecret to be empty (should not be written), got %s", account.TokenSecret)
+		}
+	})
+}

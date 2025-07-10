@@ -1,30 +1,35 @@
 package handler_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/nleiva/go-todo-api/pkg/app"
 	"github.com/nleiva/go-todo-api/test"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"gorm.io/gorm"
 )
-
-func TestHandler(t *testing.T) {
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Handler Suite")
-}
 
 var App *fiber.App
 var DB *gorm.DB
 
-var _ = BeforeSuite(func() {
+func TestMain(m *testing.M) {
+	// Setup
 	DB = test.Setup()
+	if DB == nil {
+		panic("Failed to setup database")
+	}
 	App = app.New(DB)
-})
+	if App == nil {
+		panic("Failed to create app")
+	}
 
-var _ = AfterSuite(func() {
+	// Run tests
+	code := m.Run()
+
+	// Teardown
 	app.Shutdown(App)
 	test.Teardown(DB)
-})
+
+	os.Exit(code)
+}

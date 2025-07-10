@@ -146,3 +146,68 @@ func (h *Handler) VLogout(c *fiber.Ctx) error {
 
 	return c.Status(http.StatusOK).SendString("")
 }
+
+func (h *Handler) VRegister(c *fiber.Ctx) error {
+	return adaptor.HTTPHandler(templ.Handler(view.RegisterPage(h.GetBaseData(c))))(c)
+}
+
+func (h *Handler) VRegisterPost(c *fiber.Ctx) error {
+	remoteData := &types.RegisterDTOBody{}
+
+	if err := ParseBodyAndValidate(c, remoteData, *h.validator); err != nil {
+		return err
+	}
+
+	// Check if passwords match
+	if remoteData.Password != remoteData.ConfirmPassword {
+		return utils.RequestErrorFrom(&utils.VALIDATION_ERROR, "Password and confirm password do not match")
+	}
+
+	// Check if user already exists
+	existingAccount := &model.Account{}
+	if err := h.accountService.FindAccountByEmail(existingAccount, remoteData.Email).Error; err == nil {
+		return &utils.ACCOUNT_WITH_EMAIL_ALREADY_EXISTS
+	}
+
+	// Hash the password
+	hashedPassword, err := model.HashPassword(remoteData.Password)
+	if err != nil {
+		return err
+	}
+
+	// Create new account
+	account := &model.Account{
+		Email:     remoteData.Email,
+		Password:  hashedPassword,
+		Firstname: remoteData.Firstname,
+		Lastname:  remoteData.Lastname,
+	}
+
+	if err := h.accountService.CreateAccount(account).Error; err != nil {
+		return err
+	}
+
+	// Generate JWT token for automatic login
+	auth, err := jwt.Generate(account)
+	if err != nil {
+		return err
+	}
+
+	// Set cookies
+	c.Cookie(&fiber.Cookie{
+		Name:     "go-todo-api_auth",
+		Value:    auth.Token,
+		HTTPOnly: true,
+	})
+
+	c.Cookie(&fiber.Cookie{
+		Name:     "go-todo-api_refresh",
+		Value:    auth.RefreshToken,
+		HTTPOnly: true,
+	})
+
+	// Redirect to home page
+	c.Response().Header.Set("HX-Redirect", "/")
+
+	return c.Status(http.StatusOK).SendString("")
+}

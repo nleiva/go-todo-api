@@ -26,7 +26,7 @@ func NewValidator() *Validator {
 	return v
 }
 
-func (v *Validator) Validate(payload interface{}) *utils.RequestError {
+func (v *Validator) Validate(payload any) *utils.RequestError {
 	if err := v.validator.Struct(payload); err != nil {
 		var errors []string
 
@@ -62,7 +62,7 @@ func (v *Validator) RegisterCustomValidators() {
 	v.validator.RegisterCustomTypeFunc(ValidateNullTime, null.Time{})
 }
 
-func ValidateZeroString(field reflect.Value) interface{} {
+func ValidateZeroString(field reflect.Value) any {
 	if valuer, ok := field.Interface().(zero.String); ok {
 		if valuer.Valid {
 			return valuer.String
@@ -72,7 +72,7 @@ func ValidateZeroString(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateZeroInt(field reflect.Value) interface{} {
+func ValidateZeroInt(field reflect.Value) any {
 	if valuer, ok := field.Interface().(zero.Int); ok {
 		if valuer.Valid {
 			return valuer.Int64
@@ -82,7 +82,7 @@ func ValidateZeroInt(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateZeroBool(field reflect.Value) interface{} {
+func ValidateZeroBool(field reflect.Value) any {
 	if valuer, ok := field.Interface().(zero.Bool); ok {
 		if valuer.Valid {
 			return valuer.Bool
@@ -92,7 +92,7 @@ func ValidateZeroBool(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateZeroFloat(field reflect.Value) interface{} {
+func ValidateZeroFloat(field reflect.Value) any {
 	if valuer, ok := field.Interface().(zero.Float); ok {
 		if valuer.Valid {
 			return valuer.Float64
@@ -102,7 +102,7 @@ func ValidateZeroFloat(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateZeroTime(field reflect.Value) interface{} {
+func ValidateZeroTime(field reflect.Value) any {
 	if valuer, ok := field.Interface().(zero.Time); ok {
 		if valuer.Valid {
 			return valuer.Time
@@ -112,7 +112,7 @@ func ValidateZeroTime(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateNullString(field reflect.Value) interface{} {
+func ValidateNullString(field reflect.Value) any {
 	if valuer, ok := field.Interface().(null.String); ok {
 		if valuer.Valid {
 			return valuer.String
@@ -122,7 +122,7 @@ func ValidateNullString(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateNullInt(field reflect.Value) interface{} {
+func ValidateNullInt(field reflect.Value) any {
 	if valuer, ok := field.Interface().(null.Int); ok {
 		if valuer.Valid {
 			return valuer.Int64
@@ -132,7 +132,7 @@ func ValidateNullInt(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateNullBool(field reflect.Value) interface{} {
+func ValidateNullBool(field reflect.Value) any {
 	if valuer, ok := field.Interface().(null.Bool); ok {
 		if valuer.Valid {
 			return valuer.Bool
@@ -142,7 +142,7 @@ func ValidateNullBool(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateNullFloat(field reflect.Value) interface{} {
+func ValidateNullFloat(field reflect.Value) any {
 	if valuer, ok := field.Interface().(null.Float); ok {
 		if valuer.Valid {
 			return valuer.Float64
@@ -152,7 +152,7 @@ func ValidateNullFloat(field reflect.Value) interface{} {
 	return nil
 }
 
-func ValidateNullTime(field reflect.Value) interface{} {
+func ValidateNullTime(field reflect.Value) any {
 	if valuer, ok := field.Interface().(null.Time); ok {
 		if valuer.Valid {
 			return valuer.Time

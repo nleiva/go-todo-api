@@ -1,42 +1,67 @@
 package model_test
 
 import (
+	"testing"
 	"time"
 
 	"github.com/nleiva/go-todo-api/pkg/app/model"
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
 	"gopkg.in/guregu/null.v4"
 	"gopkg.in/guregu/null.v4/zero"
 )
 
-var _ = Describe("Todo.Model", func() {
-	Describe("WriteRemote", func() {
-		It("empty", func() {
-			todo := model.Todo{}
-			todo.New(model.Todo{})
+func TestTodoModelWriteRemote(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		todo := model.Todo{}
+		todo.New(model.Todo{})
 
-			Expect(todo.Title).To(Equal(zero.NewString("", false)))
-			Expect(todo.Description).To(Equal(zero.NewString("", false)))
-			Expect(todo.Completed).To(Equal(false))
-			Expect(todo.CompletedAt).To(Equal(null.NewTime(time.Time{}, false)))
-		})
+		expectedTitle := zero.NewString("", false)
+		if todo.Title != expectedTitle {
+			t.Errorf("Expected Title to be %v, got %v", expectedTitle, todo.Title)
+		}
 
-		It("with data", func() {
-			time := time.Now()
+		expectedDescription := zero.NewString("", false)
+		if todo.Description != expectedDescription {
+			t.Errorf("Expected Description to be %v, got %v", expectedDescription, todo.Description)
+		}
 
-			todo := model.Todo{}
-			todo.New(model.Todo{
-				Title:       zero.NewString("Title", true),
-				Description: zero.NewString("Description", true),
-				Completed:   true,
-				CompletedAt: null.NewTime(time, true),
-			})
+		if todo.Completed != false {
+			t.Errorf("Expected Completed to be false, got %v", todo.Completed)
+		}
 
-			Expect(todo.Title).To(Equal(zero.NewString("Title", true)))
-			Expect(todo.Description).To(Equal(zero.NewString("Description", true)))
-			Expect(todo.Completed).To(Equal(true))
-			Expect(todo.CompletedAt).To(Equal(null.NewTime(time, true)))
-		})
+		expectedCompletedAt := null.NewTime(time.Time{}, false)
+		if todo.CompletedAt != expectedCompletedAt {
+			t.Errorf("Expected CompletedAt to be %v, got %v", expectedCompletedAt, todo.CompletedAt)
+		}
 	})
-})
+
+	t.Run("with data", func(t *testing.T) {
+		testTime := time.Now()
+
+		todo := model.Todo{}
+		todo.New(model.Todo{
+			Title:       zero.NewString("Title", true),
+			Description: zero.NewString("Description", true),
+			Completed:   true,
+			CompletedAt: null.NewTime(testTime, true),
+		})
+
+		expectedTitle := zero.NewString("Title", true)
+		if todo.Title != expectedTitle {
+			t.Errorf("Expected Title to be %v, got %v", expectedTitle, todo.Title)
+		}
+
+		expectedDescription := zero.NewString("Description", true)
+		if todo.Description != expectedDescription {
+			t.Errorf("Expected Description to be %v, got %v", expectedDescription, todo.Description)
+		}
+
+		if todo.Completed != true {
+			t.Errorf("Expected Completed to be true, got %v", todo.Completed)
+		}
+
+		expectedCompletedAt := null.NewTime(testTime, true)
+		if todo.CompletedAt != expectedCompletedAt {
+			t.Errorf("Expected CompletedAt to be %v, got %v", expectedCompletedAt, todo.CompletedAt)
+		}
+	})
+}

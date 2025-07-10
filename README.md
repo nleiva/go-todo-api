@@ -1,97 +1,186 @@
-# Go TODO app
+# Go TODO API
 
-Borrowing https://github.com/TKSpectro/go-todo-api
+A REST API for managing TODO items built with Go, Fiber, and GORM.
 
-### Getting started
+*Based on [TKSpectro/go-todo-api](https://github.com/TKSpectro/go-todo-api)*
 
-1. Create a `.env` file in the root of the project by copying the `.env.example` file and filling in the correct values
-
-```bash
-cp .env.example .env
-```
-
-2. Run the migrations (not necessary for in-memory SQlite)
-
-```bash
-make migrate-up
-```
-
-3. Generate the [TEMPL](https://templ.guide/) files
-
-```bash
- go get -tool github.com/a-h/templ/cmd/templ@latest
- go tool templ generate
-```
-
--> See [this](https://github.com/TKSpectro/go-todo-api/commit/d1f6669f91de0297d28bc0321b616a922e640957)
-
-4. Run the server
-
-```bash
-make run
-# or (if you have Air installed)
-air
-```
-
-## Knowledge base
-
-### TEMPL
-
-[TEMPL](https://templ.guide/integrations/)
-
-### JSON parsing with go
-
-Because the BodyParser will default parse null string fields as empty strings, we need a better solution to get actual null values
-With the omitempty tag, we also won't get the desired result, because it will omit the field if it's null (and then use the default value - empty string)
-
-The solution is to use the packages `"gopkg.in/guregu/null.v4/zero"` and `"gopkg.in/guregu/null.v4/null"`
-And then use the types `zero.String` and `null.String` instead of `string`
-
-Because these will use a struct under the hood, we also want to overwrite the swagger documentation for these fields, so that it will show the correct type in the docs with `swaggertype:"string"` tag
-
-### Migrations
-
-#### SQlite
-
-In-memory, done at runtime
-
-#### MySQL
-
-We can generate the schema migration code with [Atlas](https://atlasgo.io/). GORM does this directly from the models defined in this package. See [`loader/atlasGorm.go`](loader/atlasGorm.go) and [`atlas.hcl`](atlas.hcl) for details.
-
-Atlas installation:
-
-```bash
-curl -sSf https://atlasgo.sh | sh
-```
-
-##### Generate a new migration file based on the current models
-
-```bash
-make migrate-gen name=<migration-name>
-```
-##### Generate a new empty migration file
-
-```bash
-make migrate-new name=<migration-name>
-```
-
-##### Apply all migrations up to the latest version
-
-```bash
-make migrate-up
-```
-
-##### Reverse all migrations down to the given version (version is the timestamp of the migration file)
-
-```bash
-make migrate-down version=<version>
-```
+## Quick Start
 
 ### Prerequisites
 
-- [Go](https://golang.org/)
-- [Docker](https://www.docker.com/) (optional) - for running the database
-- [Make](https://www.gnu.org/software/make/) (optional) - for running the Makefile commands (shortcuts for other commands)
-- [Air](https://github.com/cosmtrek/air/) (optional) - for hot reloading while developing
-- [Ginkgo](https://onsi.github.io/ginkgo/) (optional) - for running the tests
+- [Go](https://golang.org/) 1.23 or higher
+- [Docker](https://www.docker.com/) (optional - for MySQL database)
+- [Make](https://www.gnu.org/software/make/) (optional - for running shortcuts)
+- [Air](https://github.com/cosmtrek/air/) (optional - for hot reloading during development)
+
+### Installation
+
+1. **Clone and setup environment**
+   ```bash
+   git clone <repository-url>
+   cd go-todo-api
+   cp .env.example .env
+   ```
+   Edit the `.env` file with your configuration values.
+
+2. **Run database migrations** (skip this step if using SQLite)
+   ```bash
+   make migrate-up
+   ```
+
+3. **Generate template files**
+   ```bash
+   go get -tool github.com/a-h/templ/cmd/templ@latest
+   go tool templ generate
+   ```
+
+4. **Start the server**
+   ```bash
+   make build-run
+   # or for development with hot reload
+   air
+   ```
+
+5. **Verify installation** (optional)
+   ```bash
+   make test
+   ```
+
+The API will be available at `http://localhost:3000`
+
+## Development
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `make build` | Build the application |
+| `make run` | Run the built application |
+| `make build-run` | Build and run in one command |
+| `make test` | Run all tests |
+| `make test-v` | Run tests with verbose output |
+| `make test-coverage` | Run tests with coverage report |
+| `make docker-up` | Start Docker services |
+| `make docker-down` | Stop Docker services |
+
+### Project Structure
+
+```
+├── api/                    # API documentation (Swagger)
+├── config/                 # Configuration management
+├── migrations/             # Database migration files
+├── pkg/
+│   ├── app/
+│   │   ├── handler/        # HTTP route handlers
+│   │   ├── model/          # Data models
+│   │   ├── service/        # Business logic
+│   │   └── types/          # Type definitions
+│   ├── database/           # Database connection logic
+│   ├── jwt/                # JWT authentication
+│   ├── middleware/         # HTTP middleware
+│   └── view/               # HTML templates
+├── test/                   # Test utilities
+└── utils/                  # Helper functions
+```
+
+## Testing
+
+This project uses Go's standard testing framework for reliability and simplicity.
+
+### Running Tests
+
+```bash
+# Run all tests
+make test
+
+# Run with verbose output
+make test-v
+
+# Run with coverage report
+make test-coverage
+
+# Run for CI/CD
+make test-ci
+```
+
+### Test Organization
+
+- **Model Tests** (`pkg/app/model/*_test.go`) - Unit tests for data models and business logic
+- **Handler Tests** (`pkg/app/handler/*_test.go`) - Integration tests for HTTP endpoints
+
+**Key Features:**
+- Uses SQLite in-memory database for fast, isolated test execution
+- No external dependencies required for testing
+- Automatic setup and teardown between test runs
+- Previously migrated from Ginkgo to standard Go testing for better tooling integration
+
+## Database Configuration
+
+### SQLite (Default/Testing)
+- **Usage**: Testing and development
+- **Configuration**: In-memory database, automatically configured
+- **Migrations**: Applied automatically during startup
+
+### MySQL (Production)
+- **Usage**: Production deployments
+- **Configuration**: Set database credentials in `.env` file
+- **Migrations**: Managed through Atlas migration tool
+
+### Migration Commands
+
+```bash
+# Install Atlas migration tool
+curl -sSf https://atlasgo.sh | sh
+
+# Generate migration from model changes
+make migrate-gen name=<migration-name>
+
+# Create empty migration file
+make migrate-new name=<migration-name>
+
+# Apply all pending migrations
+make migrate-up
+
+# Rollback to specific version
+make migrate-down version=<version-timestamp>
+```
+
+## Technical Details
+
+### Template Engine
+This project uses [TEMPL](https://templ.guide/) for type-safe HTML templates.
+
+Generate template files after making changes:
+```bash
+go tool templ generate
+```
+
+### JSON Handling
+The API uses custom null-handling for proper JSON serialization:
+
+- `zero.String` - for optional string fields that can be empty
+- `null.String` - for nullable string fields
+
+Add `swaggertype:"string"` tags for proper API documentation.
+
+### Authentication
+- JWT-based authentication
+- Configurable token expiration
+- Role-based permissions system
+
+### API Documentation
+Swagger documentation is auto-generated and available at `/swagger` when running the server.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests (`make test`)
+5. Commit your changes (`git commit -m 'Add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
