@@ -1,4 +1,6 @@
 # Go TODO API
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/nleiva/go-todo-api?quickstart=1)
+
 
 A modern, fast, and secure REST API for managing TODO items, built with Go, Fiber, GORM, and HTMX. Features a beautiful web interface, JWT authentication, and support for both SQLite and MySQL databases.
 
