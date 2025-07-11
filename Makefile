@@ -17,6 +17,7 @@ docker-down:
 # go-sqlite3 requires cgo to work
 .PHONY: build
 build:
+	go fmt ./...
 	CGO_ENABLED=1 go build -o ./tmp/make_build ./main.go
 
 .PHONY: run
@@ -54,7 +55,8 @@ test-coverage:
 # Generate OpenAPI documentation
 .PHONY: docs
 docs:
-	swag init --parseDependency --parseInternal --output docs
+	go tool swag init --parseDependency --parseInternal --output docs
+	go tool swag fmt
 	cp docs/docs.go api/docs.go
 	cp docs/swagger.json api/swagger.json
 	cp docs/swagger.yaml api/swagger.yaml

@@ -20,7 +20,7 @@ func PointerType(t reflect.Type) reflect.Type {
 // CopyCommonFields copies the common fields from the struct
 // pointed to srcp to the struct pointed to by destp.
 // https://stackoverflow.com/questions/59556480/convert-a-type-struct-a-to-b
-func CopyCommonFields(destp, srcp interface{}) {
+func CopyCommonFields(destp, srcp any) {
 	destv := reflect.ValueOf(destp).Elem()
 	srcv := reflect.ValueOf(srcp).Elem()
 
@@ -38,7 +38,7 @@ func CopyCommonFields(destp, srcp interface{}) {
 // Convert converts a given struct into another struct type (destStructType)
 // copying the common fields from the struct pointed to srcp to the returned struct.
 // Based on https://stackoverflow.com/questions/59556480/convert-a-type-struct-a-to-b and extended to be generic
-func Convert[T interface{}](destStructType T, srcp interface{}) T {
+func Convert[T any](destStructType T, srcp any) T {
 	dest := reflect.New(reflect.TypeOf(destStructType)).Elem()
 	srcv := reflect.ValueOf(srcp).Elem()
 

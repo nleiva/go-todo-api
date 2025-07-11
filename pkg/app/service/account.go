@@ -20,38 +20,38 @@ func NewAccountService(db *gorm.DB) *AccountService {
 
 // TODO: Maybe move this to a separate file (own package?)
 type IAccountService interface {
-	FindAccounts(dest interface{}, meta *pagination.Meta) *gorm.DB
-	FindAccountsWithTodos(dest interface{}, conditions ...interface{}) *gorm.DB
-	FindAccount(dest interface{}, conditions ...interface{}) *gorm.DB
-	FindAccountByID(dest interface{}, id uint) *gorm.DB
-	FindAccountByEmail(dest interface{}, email string) *gorm.DB
+	FindAccounts(dest any, meta *pagination.Meta) *gorm.DB
+	FindAccountsWithTodos(dest any, conditions ...any) *gorm.DB
+	FindAccount(dest any, conditions ...any) *gorm.DB
+	FindAccountByID(dest any, id uint) *gorm.DB
+	FindAccountByEmail(dest any, email string) *gorm.DB
 
 	CreateAccount(account *model.Account) *gorm.DB
 }
 
 // TODO: Maybe cleanup the base model call
-func (as *AccountService) FindAccounts(dest interface{}, meta *pagination.Meta) *gorm.DB {
+func (as *AccountService) FindAccounts(dest any, meta *pagination.Meta) *gorm.DB {
 	return model.FindWithMeta(as.db, dest, &model.Account{}, meta, nil)
 }
 
-func (as *AccountService) FindAccountsWithTodos(dest interface{}, conditions ...interface{}) *gorm.DB {
+func (as *AccountService) FindAccountsWithTodos(dest any, conditions ...any) *gorm.DB {
 	return as.db.Model(&model.Account{}).Preload("Todos").Find(dest, conditions...)
 }
 
-func (as *AccountService) FindAccount(dest interface{}, conditions ...interface{}) *gorm.DB {
+func (as *AccountService) FindAccount(dest any, conditions ...any) *gorm.DB {
 	return as.db.Model(&model.Account{}).Take(dest, conditions...)
 }
 
 // TODO: This was a generic function, but I'm not sure how to make it generic again
-func (as *AccountService) FindAccountByID(dest interface{}, id uint) *gorm.DB {
+func (as *AccountService) FindAccountByID(dest any, id uint) *gorm.DB {
 	return as.FindAccount(dest, "id = ?", id)
 }
 
-// func (as *AccountService) FindAccountByID(dest interface{}, id string) *gorm.DB {
+// func (as *AccountService) FindAccountByID(dest any, id string) *gorm.DB {
 // 	return FindAccount(dest, "id = ?", id)
 // }
 
-func (as *AccountService) FindAccountByEmail(dest interface{}, email string) *gorm.DB {
+func (as *AccountService) FindAccountByEmail(dest any, email string) *gorm.DB {
 	return as.FindAccount(dest, "email = ?", email)
 }
 

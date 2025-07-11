@@ -27,7 +27,7 @@ func NewHandler(db *gorm.DB, as service.IAccountService, ts service.ITodoService
 	}
 }
 
-func (h *Handler) FindWithMeta(dest interface{}, model interface{}, meta *pagination.Meta, where *gorm.DB) *gorm.DB {
+func (h *Handler) FindWithMeta(dest any, model any, meta *pagination.Meta, where *gorm.DB) *gorm.DB {
 	search, searchArgs := searchWhere(meta.Search, model)
 
 	query := h.db.Model(model).Where(search, searchArgs...)
@@ -37,14 +37,14 @@ func (h *Handler) FindWithMeta(dest interface{}, model interface{}, meta *pagina
 	}
 
 	filters := &meta.Filters
-	if filters != nil && len(*filters) > 0 {
+	if len(*filters) > 0 {
 		query = query.Where(filtersToQuery(filters))
 	}
 
 	query = query.Offset(meta.Offset).Limit(meta.Limit)
 
 	orders := &meta.Order
-	if orders != nil && len(*orders) > 0 {
+	if len(*orders) > 0 {
 		query = query.Order(ordersToQuery(orders))
 	}
 
@@ -137,7 +137,7 @@ func countMeta(meta *pagination.Meta, query *gorm.DB) {
 
 // SearchWhere returns a string and an array of interfaces that can be used in a gorm query
 // The array just needs to be spread into the args of the query like this (query.Where(searchString, searchArray...)
-func searchWhere(search string, model interface{}) (string, []interface{}) {
+func searchWhere(search string, model any) (string, []any) {
 	amountSearchableFields := 0
 	searchString := ""
 
@@ -161,7 +161,7 @@ func searchWhere(search string, model interface{}) (string, []interface{}) {
 		}
 	}
 
-	searchArray := make([]interface{}, amountSearchableFields)
+	searchArray := make([]any, amountSearchableFields)
 	for i := 0; i < amountSearchableFields; i++ {
 		searchArray[i] = search
 	}

@@ -13,13 +13,14 @@ import (
 )
 
 // Register      godoc
-// @Summary      Register
-// @Tags         auth
-// @Accept       json
-// @Produce      json
-// @Param        account body types.RegisterDTO true "Account"
-// @Success      200 {object} types.AuthResponse
-// @Router       /auth/register [post]
+//
+//	@Summary	Register
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Param		account	body		types.RegisterDTO	true	"Account"
+//	@Success	200		{object}	types.AuthResponse
+//	@Router		/auth/register [post]
 func (h *Handler) Register(c *fiber.Ctx) error {
 	remoteData := &types.RegisterDTO{}
 
@@ -58,13 +59,14 @@ func (h *Handler) Register(c *fiber.Ctx) error {
 }
 
 // Login      godoc
-// @Summary      Login
-// @Tags         auth
-// @Accept       json
-// @Produce      json
-// @Param        account body types.LoginDTO true "Account"
-// @Success      200 {object} types.AuthResponse
-// @Router       /auth/login [put]
+//
+//	@Summary	Login
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Param		account	body		types.LoginDTO	true	"Account"
+//	@Success	200		{object}	types.AuthResponse
+//	@Router		/auth/login [put]
 func (h *Handler) Login(c *fiber.Ctx) error {
 	remoteData := &types.LoginDTO{}
 
@@ -95,12 +97,13 @@ func (h *Handler) Login(c *fiber.Ctx) error {
 }
 
 // Refresh      godoc
-// @Summary      Refresh
-// @Tags         auth
-// @Accept       json
-// @Produce      json
-// @Success      200 {object} types.AuthResponse
-// @Router       /auth/refresh [put]
+//
+//	@Summary	Refresh
+//	@Tags		auth
+//	@Accept		json
+//	@Produce	json
+//	@Success	200	{object}	types.AuthResponse
+//	@Router		/auth/refresh [put]
 func (h *Handler) Refresh(c *fiber.Ctx) error {
 	var tokenPayload = locals.JwtPayload(c)
 

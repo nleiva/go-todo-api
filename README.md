@@ -69,6 +69,7 @@ CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 3. **Install dependencies and generate templates**
    ```bash
    go mod download
+   go get -tool github.com/swaggo/swag/cmd/swag@latest
    go get -tool github.com/a-h/templ/cmd/templ@latest
    go tool templ generate
    ```
@@ -271,27 +272,6 @@ make docs
 # or directly with swag
 swag init --parseDependency --parseInternal --output docs
 ```
-
-## Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch** (`git checkout -b feature/amazing-feature`)
-3. **Make your changes** and ensure they follow the project standards
-4. **Run tests** (`make test`) to ensure everything works
-5. **Update documentation** if needed
-6. **Commit your changes** (`git commit -m 'Add amazing feature'`)
-7. **Push to the branch** (`git push origin feature/amazing-feature`)
-8. **Open a Pull Request** with a clear description of your changes
-
-### Development Guidelines
-
-- Follow Go best practices and conventions
-- Write tests for new functionality
-- Update documentation for API changes
-- Use conventional commit messages
-- Ensure all tests pass before submitting
 
 ## Acknowledgments
 

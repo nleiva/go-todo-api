@@ -15,13 +15,14 @@ import (
 )
 
 // GetAccounts   godoc
-// @Summary      List accounts
-// @Tags         accounts
-// @Accept       json
-// @Param		 meta query pagination.QueryParams false "Pagination Query Parameters"
-// @Produce      json
-// @Success      200  {array}  model.Account
-// @Router       /accounts [get]
+//
+//	@Summary	List accounts
+//	@Tags		accounts
+//	@Accept		json
+//	@Param		meta	query	pagination.QueryParams	false	"Pagination Query Parameters"
+//	@Produce	json
+//	@Success	200	{array}	model.Account
+//	@Router		/accounts [get]
 func (h *Handler) GetAccounts(c *fiber.Ctx) error {
 	var accounts = &[]model.Account{}
 	var meta = locals.Meta(c)
@@ -42,14 +43,15 @@ func (h *Handler) GetAccounts(c *fiber.Ctx) error {
 }
 
 // GetAccount    godoc
-// @Summary      Get account
-// @Description  get string by ID
-// @Tags         accounts
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "Account ID"
-// @Success      200  {object}  model.Account
-// @Router       /accounts/{id} [get]
+//
+//	@Summary		Get account
+//	@Description	get string by ID
+//	@Tags			accounts
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Account ID"
+//	@Success		200	{object}	model.Account
+//	@Router			/accounts/{id} [get]
 func (h *Handler) GetAccount(c *fiber.Ctx) error {
 	var account = &model.Account{}
 

@@ -5,7 +5,7 @@ import (
 	"github.com/nleiva/go-todo-api/utils"
 )
 
-func ParseBody(c *fiber.Ctx, body interface{}) *utils.RequestError {
+func ParseBody(c *fiber.Ctx, body any) *utils.RequestError {
 	if err := c.BodyParser(body); err != nil {
 		return utils.RequestErrorFrom(&utils.BAD_REQUEST, err.Error())
 	}
@@ -13,7 +13,7 @@ func ParseBody(c *fiber.Ctx, body interface{}) *utils.RequestError {
 	return nil
 }
 
-func ParseBodyAndValidate(c *fiber.Ctx, body interface{}, v Validator) *utils.RequestError {
+func ParseBodyAndValidate(c *fiber.Ctx, body any, v Validator) *utils.RequestError {
 	if err := ParseBody(c, body); err != nil {
 		return err
 	}

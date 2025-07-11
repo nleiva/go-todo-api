@@ -19,13 +19,14 @@ import (
 )
 
 // GetTodos   godoc
-// @Summary    List todos
-// @Tags       todos
-// @Accept     json
-// @Param	   meta query pagination.QueryParams false "Pagination Query Parameters"
-// @Produce    json
-// @Success    200  {object}  types.GetTodosResponse
-// @Router     /todos [get]
+//
+//	@Summary	List todos
+//	@Tags		todos
+//	@Accept		json
+//	@Param		meta	query	pagination.QueryParams	false	"Pagination Query Parameters"
+//	@Produce	json
+//	@Success	200	{object}	types.GetTodosResponse
+//	@Router		/todos [get]
 func (h *Handler) GetTodos(c *fiber.Ctx) error {
 	var meta = locals.Meta(c)
 
@@ -41,14 +42,15 @@ func (h *Handler) GetTodos(c *fiber.Ctx) error {
 }
 
 // GetTodo    godoc
-// @Summary    Get todo
-// @Description  get string by ID
-// @Tags       todos
-// @Accept     json
-// @Produce    json
-// @Param      id   path      int  true  "Todo ID"
-// @Success    200  {object}  types.GetTodoResponse
-// @Router     /todos/{id} [get]
+//
+//	@Summary		Get todo
+//	@Description	get string by ID
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Todo ID"
+//	@Success		200	{object}	types.GetTodoResponse
+//	@Router			/todos/{id} [get]
 func (h *Handler) GetTodo(c *fiber.Ctx) error {
 	var todo = &model.Todo{}
 
@@ -74,14 +76,15 @@ func (h *Handler) CreateRandomTodo(c *fiber.Ctx) error {
 }
 
 // CreateTodo    godoc
-// @Summary      Create todo
-// @Description  Create todo
-// @Tags         todos
-// @Accept       json
-// @Produce      json
-// @Param        todo body 		types.CreateTodoRequest true "Todo"
-// @Success      200  {object}  types.CreateTodoResponse
-// @Router       /todos [post]
+//
+//	@Summary		Create todo
+//	@Description	Create todo
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			todo	body		types.CreateTodoRequest	true	"Todo"
+//	@Success		200		{object}	types.CreateTodoResponse
+//	@Router			/todos [post]
 func (h *Handler) CreateTodo(c *fiber.Ctx) error {
 	remoteData := &types.CreateTodoRequest{}
 
@@ -103,15 +106,16 @@ func (h *Handler) CreateTodo(c *fiber.Ctx) error {
 }
 
 // UpdateTodo    godoc
-// @Summary      Update todo
-// @Description  Update todo
-// @Tags         todos
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "Todo ID"
-// @Param        todo body      types.UpdateTodoRequest true "Todo"
-// @Success      200  {object}  types.UpdateTodoResponse
-// @Router       /todos/{id} [put]
+//
+//	@Summary		Update todo
+//	@Description	Update todo
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			id		path		int						true	"Todo ID"
+//	@Param			todo	body		types.UpdateTodoRequest	true	"Todo"
+//	@Success		200		{object}	types.UpdateTodoResponse
+//	@Router			/todos/{id} [put]
 func (h *Handler) UpdateTodo(c *fiber.Ctx) error {
 	var todo = &model.Todo{}
 
@@ -144,14 +148,15 @@ func (h *Handler) UpdateTodo(c *fiber.Ctx) error {
 }
 
 // DeleteTodo    godoc
-// @Summary      Delete todo
-// @Description  Delete todo
-// @Tags         todos
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "Todo ID"
-// @Success      204  {object}  nil  "No Content"
-// @Router       /todos/{id} [delete]
+//
+//	@Summary		Delete todo
+//	@Description	Delete todo
+//	@Tags			todos
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		int	true	"Todo ID"
+//	@Success		204	{object}	nil	"No Content"
+//	@Router			/todos/{id} [delete]
 func (h *Handler) DeleteTodo(c *fiber.Ctx) error {
 	var todo = &model.Todo{}
 
