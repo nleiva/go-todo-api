@@ -103,6 +103,13 @@ definitions:
       todo:
         $ref: '#/definitions/model.Todo'
     type: object
+  types.GetMeResponse:
+    properties:
+      account:
+        $ref: '#/definitions/model.Account'
+      auth:
+        $ref: '#/definitions/types.AuthResponseBody'
+    type: object
   types.GetTodoResponse:
     properties:
       todo:
@@ -172,7 +179,6 @@ definitions:
       todo:
         $ref: '#/definitions/model.Todo'
     type: object
-host: localhost:3000
 info:
   contact:
     name: API Support
@@ -264,6 +270,24 @@ paths:
           schema:
             $ref: '#/definitions/types.AuthResponse'
       summary: Login
+      tags:
+      - auth
+  /auth/me:
+    get:
+      consumes:
+      - application/json
+      description: Get current authenticated user's account information and refresh
+        tokens
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/types.GetMeResponse'
+      security:
+      - BearerAuth: []
+      summary: Get current user profile
       tags:
       - auth
   /auth/refresh:

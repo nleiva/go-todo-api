@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/gofiber/fiber/v2"
 	fiberSwagger "github.com/gofiber/swagger"
-	"github.com/nleiva/go-todo-api/config"
 	"github.com/nleiva/go-todo-api/pkg/middleware"
 )
 
@@ -17,7 +16,8 @@ func (h *Handler) RegisterRoutes(app *fiber.App) {
 //
 // Good Read for Hypermedia-Driven Applications: https://hypermedia.systems/json-data-apis/
 func (h *Handler) RegisterHyperMediaRoutes(app *fiber.App) {
-	app.Static("/js", config.ROOT_PATH+"/pkg/view/js")
+	// Apply cache control middleware for development
+	app.Use(middleware.NoCacheForDevelopment)
 
 	app.Get("/", middleware.LoadAuth, h.VIndex)
 
@@ -27,6 +27,8 @@ func (h *Handler) RegisterHyperMediaRoutes(app *fiber.App) {
 
 	app.Get("/register", h.VRegister)
 	app.Post("/register", h.VRegisterPost)
+
+	app.Get("/profile", middleware.Protected, h.VProfile)
 
 	app.Get("/todos", middleware.Pagination, middleware.Protected, middleware.Pagination, h.VTodosIndex)
 	app.Post("/todos", middleware.Protected, h.VTodosCreate)
@@ -41,8 +43,8 @@ func (h *Handler) RegisterApiRoutes(app *fiber.App) {
 		return c.SendString("Hello from base api path")
 	})
 
-	// Swagger UI documentation
-	api.Get("/docs/*", fiberSwagger.HandlerDefault)
+	// Swagger UI documentation with dynamic host detection
+	api.Get("/docs/*", middleware.DynamicSwagger, fiberSwagger.HandlerDefault)
 
 	// Redoc documentation
 	api.Get("/redoc", func(c *fiber.Ctx) error {
@@ -67,7 +69,7 @@ func (h *Handler) RegisterApiRoutes(app *fiber.App) {
 
 	auth := api.Group("/auth")
 	auth.Put("/login", h.Login)
-	auth.Post("/register", h.Register)
+	auth.Post("/register", middleware.Protected, h.Register)
 	auth.Put("/refresh", middleware.Protected, h.Refresh)
 	auth.Get("/me", middleware.Protected, h.Me)
 

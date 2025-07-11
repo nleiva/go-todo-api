@@ -8,6 +8,7 @@ import (
 	"github.com/nleiva/go-todo-api/pkg/app/types"
 	"github.com/nleiva/go-todo-api/pkg/jwt"
 	"github.com/nleiva/go-todo-api/pkg/middleware/locals"
+	"github.com/nleiva/go-todo-api/pkg/permission"
 	"github.com/nleiva/go-todo-api/utils"
 	"gorm.io/gorm"
 )
@@ -37,6 +38,8 @@ func (h *Handler) Register(c *fiber.Ctx) error {
 	// Convert remoteData.Account from RegisterDTOBody to Account type
 	account.New(utils.Convert(model.Account{}, &remoteData.Account))
 
+	// Give new users basic permissions
+	account.Permission = permission.ACCOUNTS_READ_OWN
 	account.TokenSecret = model.GenerateSecretToken()
 	hashedPassword, err := model.HashPassword(remoteData.Account.Password)
 	if err != nil {
@@ -139,6 +142,16 @@ func (h *Handler) RotateJWK(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
+// Me           godoc
+//
+//	@Summary		Get current user profile
+//	@Description	Get current authenticated user's account information and refresh tokens
+//	@Tags			auth
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	types.GetMeResponse
+//	@Security		BearerAuth
+//	@Router			/auth/me [get]
 func (h *Handler) Me(c *fiber.Ctx) error {
 	var account = &model.Account{}
 
@@ -150,7 +163,14 @@ func (h *Handler) Me(c *fiber.Ctx) error {
 		return &utils.INTERNAL_SERVER_ERROR
 	}
 
-	return c.JSON(&types.GetAccountResponse{
+	// Generate fresh tokens for the user
+	auth, err := jwt.Generate(account)
+	if err != nil {
+		return &utils.INTERNAL_SERVER_ERROR
+	}
+
+	return c.JSON(&types.GetMeResponse{
 		Account: *account,
+		Auth:    auth,
 	})
 }

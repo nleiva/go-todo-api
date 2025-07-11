@@ -35,3 +35,7 @@ tailwind.config.js
 
 # Ignore generated templ files
 *_templ.go
+
+# binary
+go-todo-api
+main

@@ -57,9 +57,6 @@ test-coverage:
 docs:
 	go tool swag init --parseDependency --parseInternal --output docs
 	go tool swag fmt
-	cp docs/docs.go api/docs.go
-	cp docs/swagger.json api/swagger.json
-	cp docs/swagger.yaml api/swagger.yaml
 
 # Legacy target for backward compatibility
 .PHONY: swag

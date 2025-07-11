@@ -1,8 +1,8 @@
 package types
 
 type LoginDTOBody struct {
-	Email    string `json:"email" validate:"required,email"`
-	Password string `json:"password" validate:"required,min=6,max=100"`
+	Email    string `json:"email" form:"email" validate:"required,email"`
+	Password string `json:"password" form:"password" validate:"required,min=6,max=100"`
 }
 
 type LoginDTO struct {
@@ -10,11 +10,11 @@ type LoginDTO struct {
 }
 
 type RegisterDTOBody struct {
-	Email           string `json:"email" validate:"required,email"`
-	Password        string `json:"password" validate:"required,min=6,max=100"`
-	ConfirmPassword string `json:"confirmPassword" validate:"required,min=6,max=100"`
-	Firstname       string `json:"firstname" validate:"omitempty,min=2"`
-	Lastname        string `json:"lastname" validate:"omitempty,min=2"`
+	Email           string `json:"email" form:"email" validate:"required,email"`
+	Password        string `json:"password" form:"password" validate:"required,min=6,max=100"`
+	ConfirmPassword string `json:"confirmPassword" form:"confirmPassword" validate:"required,min=6,max=100"`
+	Firstname       string `json:"firstname" form:"firstname" validate:"omitempty,min=2"`
+	Lastname        string `json:"lastname" form:"lastname" validate:"omitempty,min=2"`
 }
 
 type RegisterDTO struct {

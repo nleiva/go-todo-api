@@ -3,7 +3,6 @@ package app
 import (
 	"errors"
 
-	_ "github.com/nleiva/go-todo-api/api"
 	"github.com/nleiva/go-todo-api/utils"
 
 	"github.com/gofiber/fiber/v2"

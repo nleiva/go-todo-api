@@ -7,8 +7,10 @@ package permission
 // Also don't write explicit values for the constants
 
 const (
+	// ACCOUNTS_READ_OWN is the permission to read own account data
+	ACCOUNTS_READ_OWN uint64 = 1 << iota
 	// ACCOUNTS_READ_ALL is the permission to read all accounts
-	ACCOUNTS_READ_ALL uint64 = 1 << iota
+	ACCOUNTS_READ_ALL
 	// ACCOUNTS_MANAGE_ALL is the permission to manage all accounts (includes read)
 	ACCOUNTS_MANAGE_ALL
 )

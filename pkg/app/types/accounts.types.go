@@ -13,3 +13,8 @@ type GetAccountsResponse struct {
 type GetAccountResponse struct {
 	Account model.Account `json:"account"`
 }
+
+type GetMeResponse struct {
+	Account model.Account    `json:"account"`
+	Auth    AuthResponseBody `json:"auth"`
+}

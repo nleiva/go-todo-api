@@ -18,6 +18,9 @@ var (
 	ROOT_PATH = getEnv("GTA_ROOT_PATH", ".")
 	PORT      = getEnv("PORT", "3000")
 
+	// Swagger configuration
+	SWAGGER_HOST = getEnv("SWAGGER_HOST", "localhost:3000")
+
 	DB_HOST          = getEnv("DB_HOST", "localhost")
 	DB_USER          = getEnv("DB_USER", "root")
 	DB_ROOT_PASSWORD = getEnv("DB_ROOT_PASSWORD", "root")
@@ -27,7 +30,7 @@ var (
 	JWT_TOKEN_EXP   = getEnvTimeDurationParse("JWT_TOKEN_EXP", "1h")
 	JWT_REFRESH_EXP = getEnvTimeDurationParse("JWT_REFRESH_EXP", "10m")
 
-	ALLOWED_IPS = getEnvList("ALLOWED_IPS")
+	ALLOWED_IPS = getEnvList("ALLOWED_IPS", []string{"127.0.0.1"})
 
 	// Testing environment variables
 	IS_TEST               = getEnvBool("IS_TEST", "false")
@@ -80,11 +83,11 @@ func getEnvBool(name string, fallback string) bool {
 	return value == "true" || value == "1"
 }
 
-func getEnvList(name string) []string {
+func getEnvList(name string, fallback []string) []string {
 	value := getEnv(name, "")
 
 	if value == "" {
-		return []string{}
+		return fallback
 	}
 
 	return strings.Split(value, ",")

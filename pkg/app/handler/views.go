@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/a-h/templ"
 	"github.com/gofiber/fiber/v2"
@@ -31,6 +32,60 @@ func (h *Handler) GetBaseData(c *fiber.Ctx) view.BaseData {
 
 func (h *Handler) VIndex(c *fiber.Ctx) error {
 	return adaptor.HTTPHandler(templ.Handler(view.IndexPage(h.GetBaseData(c))))(c)
+}
+
+func (h *Handler) VProfile(c *fiber.Ctx) error {
+	// Get the account
+	account := &model.Account{}
+	accountID := locals.JwtPayload(c).AccountID
+
+	err := h.accountService.FindAccountByID(account, accountID).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return &utils.NOT_FOUND
+		}
+		return &utils.INTERNAL_SERVER_ERROR
+	}
+
+	// Calculate todo statistics
+	var totalTodos, completedTodos, pendingTodos int64
+
+	// Get total todos count
+	if err := h.db.Model(&model.Todo{}).Where("account_id = ?", accountID).Count(&totalTodos).Error; err != nil {
+		return &utils.INTERNAL_SERVER_ERROR
+	}
+
+	// Get completed todos count
+	if err := h.db.Model(&model.Todo{}).Where("account_id = ? AND completed = ?", accountID, true).Count(&completedTodos).Error; err != nil {
+		return &utils.INTERNAL_SERVER_ERROR
+	}
+
+	// Calculate pending todos
+	pendingTodos = totalTodos - completedTodos
+
+	// Calculate completion rate
+	completionRate := 0
+	if totalTodos > 0 {
+		completionRate = int((completedTodos * 100) / totalTodos)
+	}
+
+	// Prepare profile data
+	profileData := types.ProfileData{
+		Account: account,
+		Stats: types.ProfileStats{
+			TotalTodos:     totalTodos,
+			CompletedTodos: completedTodos,
+			PendingTodos:   pendingTodos,
+			CompletionRate: completionRate,
+		},
+	}
+
+	pageData := view.ProfilePageData{
+		BaseData:    h.GetBaseData(c),
+		ProfileData: profileData,
+	}
+
+	return adaptor.HTTPHandler(templ.Handler(view.ProfilePage(pageData)))(c)
 }
 
 func (h *Handler) VTodosIndex(c *fiber.Ctx) error {
@@ -100,24 +155,34 @@ func (h *Handler) VLoginPost(c *fiber.Ctx) error {
 	remoteData := &types.LoginDTOBody{}
 
 	if err := ParseBodyAndValidate(c, remoteData, *h.validator); err != nil {
-		return err
+		// Return login page with validation error
+		baseData := h.GetBaseData(c)
+		return adaptor.HTTPHandler(templ.Handler(view.LoginPageWithError(baseData, "Please check your input and try again.")))(c)
 	}
 
 	account := &model.Account{}
 	if err := h.accountService.FindAccountByEmail(account, remoteData.Email).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return &utils.NOT_FOUND
+			// Return login page with "account not found" error
+			baseData := h.GetBaseData(c)
+			return adaptor.HTTPHandler(templ.Handler(view.LoginPageWithError(baseData, "No account found with this email address.")))(c)
 		}
-		return err
+		// Return login page with generic error
+		baseData := h.GetBaseData(c)
+		return adaptor.HTTPHandler(templ.Handler(view.LoginPageWithError(baseData, "An error occurred. Please try again.")))(c)
 	}
 
 	if !model.CheckPasswordHash(remoteData.Password, account.Password) {
-		return &utils.AUTH_LOGIN_WRONG_PASSWORD
+		// Return login page with "wrong password" error
+		baseData := h.GetBaseData(c)
+		return adaptor.HTTPHandler(templ.Handler(view.LoginPageWithError(baseData, "Incorrect email or password. Please try again.")))(c)
 	}
 
 	auth, err := jwt.Generate(account)
 	if err != nil {
-		return err
+		// Return login page with generic error
+		baseData := h.GetBaseData(c)
+		return adaptor.HTTPHandler(templ.Handler(view.LoginPageWithError(baseData, "An error occurred. Please try again.")))(c)
 	}
 
 	//Set cookie and return 200
@@ -125,12 +190,18 @@ func (h *Handler) VLoginPost(c *fiber.Ctx) error {
 		Name:     "go-todo-api_auth",
 		Value:    auth.Token,
 		HTTPOnly: true,
+		Secure:   c.Protocol() == "https", // Only secure in HTTPS
+		SameSite: "Lax",
+		MaxAge:   3600, // 1 hour
 	})
 
 	c.Cookie(&fiber.Cookie{
 		Name:     "go-todo-api_refresh",
 		Value:    auth.RefreshToken,
 		HTTPOnly: true,
+		Secure:   c.Protocol() == "https",
+		SameSite: "Lax",
+		MaxAge:   86400, // 24 hours
 	})
 
 	c.Response().Header.Set("HX-Redirect", "/")
@@ -139,12 +210,28 @@ func (h *Handler) VLoginPost(c *fiber.Ctx) error {
 }
 
 func (h *Handler) VLogout(c *fiber.Ctx) error {
-	c.ClearCookie("go-todo-api_auth")
-	c.ClearCookie("go-todo-api_refresh")
+	// Clear auth cookies with proper settings
+	c.Cookie(&fiber.Cookie{
+		Name:     "go-todo-api_auth",
+		Value:    "",
+		HTTPOnly: true,
+		Secure:   c.Protocol() == "https",
+		SameSite: "Lax",
+		MaxAge:   -1, // Expire immediately
+		Expires:  time.Unix(0, 0),
+	})
 
-	c.Response().Header.Set("HX-Redirect", "/")
+	c.Cookie(&fiber.Cookie{
+		Name:     "go-todo-api_refresh",
+		Value:    "",
+		HTTPOnly: true,
+		Secure:   c.Protocol() == "https",
+		SameSite: "Lax",
+		MaxAge:   -1, // Expire immediately
+		Expires:  time.Unix(0, 0),
+	})
 
-	return c.Status(http.StatusOK).SendString("")
+	return c.Redirect("/")
 }
 
 func (h *Handler) VRegister(c *fiber.Ctx) error {

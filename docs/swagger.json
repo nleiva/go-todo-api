@@ -13,7 +13,6 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:3000",
     "basePath": "/api",
     "paths": {
         "/accounts": {
@@ -138,6 +137,34 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/types.AuthResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get current authenticated user's account information and refresh tokens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get current user profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.GetMeResponse"
                         }
                     }
                 }
@@ -543,6 +570,17 @@
             "properties": {
                 "todo": {
                     "$ref": "#/definitions/model.Todo"
+                }
+            }
+        },
+        "types.GetMeResponse": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/model.Account"
+                },
+                "auth": {
+                    "$ref": "#/definitions/types.AuthResponseBody"
                 }
             }
         },

@@ -40,9 +40,10 @@ func parseFilters(c *fiber.Ctx) []pagination.FilterEntry {
 	filters := make([]pagination.FilterEntry, 0)
 
 	queryArgs.VisitAll(func(key, value []byte) {
-		if strings.HasPrefix(string(key[:6]), "filter") {
+		keyStr := string(key)
+		if len(keyStr) > 6 && strings.HasPrefix(keyStr, "filter") {
 			// Split up the filter string by ] and already skip the first "["
-			entries := strings.Split(string(key[7:]), "]")
+			entries := strings.Split(keyStr[7:], "]")
 
 			// Default
 			operator := "eq"
@@ -83,8 +84,9 @@ func parseOrders(c *fiber.Ctx) []pagination.OrderEntry {
 	queryArgs := c.Context().QueryArgs()
 
 	queryArgs.VisitAll(func(key, value []byte) {
-		if strings.HasPrefix(string(key), "order") {
-			entries := strings.Split(string(key[6:]), "]")
+		keyStr := string(key)
+		if len(keyStr) > 5 && strings.HasPrefix(keyStr, "order") {
+			entries := strings.Split(keyStr[6:], "]")
 
 			direction := "asc"
 

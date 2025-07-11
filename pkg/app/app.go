@@ -1,7 +1,6 @@
 package app
 
 import (
-	_ "github.com/nleiva/go-todo-api/api"
 	"github.com/nleiva/go-todo-api/pkg/app/handler"
 	"github.com/nleiva/go-todo-api/pkg/app/service"
 	"github.com/nleiva/go-todo-api/pkg/jwt"

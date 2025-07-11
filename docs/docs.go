@@ -145,6 +145,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/auth/me": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Get current authenticated user's account information and refresh tokens",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Get current user profile",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.GetMeResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/refresh": {
             "put": {
                 "consumes": [
@@ -548,6 +576,17 @@ const docTemplate = `{
                 }
             }
         },
+        "types.GetMeResponse": {
+            "type": "object",
+            "properties": {
+                "account": {
+                    "$ref": "#/definitions/model.Account"
+                },
+                "auth": {
+                    "$ref": "#/definitions/types.AuthResponseBody"
+                }
+            }
+        },
         "types.GetTodoResponse": {
             "type": "object",
             "properties": {
@@ -664,7 +703,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:3000",
+	Host:             "",
 	BasePath:         "/api",
 	Schemes:          []string{"http", "https"},
 	Title:            "Go TODO API",

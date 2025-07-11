@@ -8,10 +8,9 @@ import (
 	"syscall"
 	"time"
 
-	_ "github.com/nleiva/go-todo-api/api"
+	"github.com/nleiva/go-todo-api/config"
 	"github.com/nleiva/go-todo-api/pkg/app"
 	"github.com/nleiva/go-todo-api/pkg/database"
-
 	"gorm.io/gorm"
 )
 
@@ -20,7 +19,6 @@ import (
 //	@description				A modern, fast, and secure REST API for managing TODO items, built with Go, Fiber, GORM, and HTMX.
 //	@contact.name				API Support
 //	@contact.url				https://github.com/nleiva/go-todo-api
-//	@host						localhost:3000
 //	@BasePath					/api
 //	@schemes					http https
 //	@securityDefinitions.apikey	BearerAuth
@@ -34,7 +32,7 @@ type backend interface {
 }
 
 func run() error {
-	PORT := "3000"
+	PORT := config.PORT
 	DB := "sqlite"
 
 	var b backend
