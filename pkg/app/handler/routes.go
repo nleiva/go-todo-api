@@ -2,9 +2,9 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
+	fiberSwagger "github.com/gofiber/swagger"
 	"github.com/nleiva/go-todo-api/config"
 	"github.com/nleiva/go-todo-api/pkg/middleware"
-	fiberSwagger "github.com/swaggo/fiber-swagger"
 )
 
 // New registers all routes for the application
@@ -42,7 +42,7 @@ func (h *Handler) RegisterApiRoutes(app *fiber.App) {
 	})
 
 	// Swagger UI documentation
-	api.Get("/docs/*", fiberSwagger.WrapHandler)
+	api.Get("/docs/*", fiberSwagger.HandlerDefault)
 
 	// Redoc documentation
 	api.Get("/redoc", func(c *fiber.Ctx) error {
