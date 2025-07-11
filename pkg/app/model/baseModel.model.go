@@ -25,7 +25,7 @@ func FindWithMeta(db *gorm.DB, dest any, model any, meta *pagination.Meta, where
 	}
 
 	filters := &meta.Filters
-	if filters != nil && len(*filters) > 0 {
+	if len(*filters) > 0 {
 		query = query.Where(filtersToQuery(filters))
 	}
 

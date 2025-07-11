@@ -1,21 +1,20 @@
 # Go TODO API
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/nleiva/go-todo-api?quickstart=1)
 
-
-A modern, fast, and secure REST API for managing TODO items, built with Go, Fiber, GORM, and HTMX. Features a beautiful web interface, JWT authentication, and support for both SQLite and MySQL databases.
+A modern, fast, and secure REST API for managing TODO items, built with Go, Fiber, GORM, and HTMX. It features a beautiful web interface, JWT authentication, and support for both SQLite and MySQL databases.
 
 *Based on [TKSpectro/go-todo-api](https://github.com/TKSpectro/go-todo-api)*
 
 ## Features
 
-- **High Performance**: Built with Go and Fiber for lightning-fast responses
+- **High Performance**: Built with Go and Fiber for fast responses
 - **Secure Authentication**: JWT-based authentication with bcrypt password hashing
 - **Modern UI**: Beautiful, responsive web interface using HTMX and Tailwind CSS
 - **Interactive Experience**: Real-time updates without page refreshes
 - **Flexible Database**: Support for both SQLite (development) and MySQL (production)
-- **Well Tested**: Comprehensive test suite using Go's standard testing package
+- **Comprehensive Testing**: Test suite using Go's standard testing package
 - **API Documentation**: Auto-generated OpenAPI documentation with Swagger UI and Redoc
-- **Developer Friendly**: Hot reloading, easy setup, and comprehensive tooling
+- **Developer Tools**: Hot reloading, easy setup, and comprehensive tooling
 
 ## Quick Start
 
@@ -28,7 +27,7 @@ A modern, fast, and secure REST API for managing TODO items, built with Go, Fibe
 
 ### Installation
 
-1. **Clone and setup environment**
+1. **Clone the repository and set up environment**
    ```bash
    git clone <repository-url>
    cd go-todo-api
@@ -61,14 +60,9 @@ JWT_EXPIRY=24h                    # Token expiration time
 CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
-**Note**: For development and testing, SQLite is used by default and requires no additional configuration.
+**Note**: For development and testing, SQLite is used by default and requires no additional setup.
 
-2. **Run database migrations** (skip this step if using SQLite)
-   ```bash
-   make migrate-up
-   ```
-
-3. **Install dependencies and generate templates**
+2. **Install dependencies and generate templates**
    ```bash
    go mod download
    go get -tool github.com/swaggo/swag/cmd/swag@latest
@@ -76,14 +70,14 @@ CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
    go tool templ generate
    ```
 
-4. **Start the server**
+3. **Start the server**
    ```bash
    make build-run
    # or for development with hot reload
    air
    ```
 
-5. **Verify installation** (optional)
+4. **Run tests** (optional)
    ```bash
    make test
    ```
@@ -97,9 +91,9 @@ Once the server is running, you can access:
 - **Home Page**: `http://localhost:3000/` - Welcome page with features overview
 - **Register**: `http://localhost:3000/register` - Create a new account
 - **Login**: `http://localhost:3000/login` - Sign in to your account
-- **Todos**: `http://localhost:3000/todos` - Manage your todo items (after login)
+- **Todos**: `http://localhost:3000/todos` - Manage your todo items (requires login)
 - **API Documentation**: `http://localhost:3000/api/docs` - Interactive Swagger UI documentation
-- **Redoc Documentation**: `http://localhost:3000/api/redoc` - Beautiful Redoc documentation
+- **Redoc Documentation**: `http://localhost:3000/api/redoc` - Clean API documentation with Redoc
 
 ## Development
 
@@ -122,7 +116,6 @@ Once the server is running, you can access:
 ### Project Structure
 
 ```
-├── api/                    # API documentation (OpenAPI/Swagger)
 ├── config/                 # Configuration management
 ├── docs/                   # Generated API documentation
 ├── loader/                 # Database initialization and schema generation
@@ -146,7 +139,7 @@ Once the server is running, you can access:
 
 ## Testing
 
-This project uses Go's standard testing framework for reliability and simplicity.
+This project uses Go's standard testing framework.
 
 ### Running Tests
 
@@ -160,7 +153,7 @@ make test-v
 # Run with coverage report
 make test-coverage
 
-# Run for CI/CD
+# Run for CI/CD environments
 make test-ci
 ```
 
@@ -169,17 +162,13 @@ make test-ci
 - **Model Tests** (`pkg/app/model/*_test.go`) - Unit tests for data models and business logic
 - **Handler Tests** (`pkg/app/handler/*_test.go`) - Integration tests for HTTP endpoints
 
-**Key Features:**
-- Uses SQLite in-memory database for fast, isolated test execution
-- No external dependencies required for testing
-- Automatic setup and teardown between test runs
-- Previously migrated from Ginkgo to standard Go testing for better tooling integration
+The tests use SQLite in-memory database for fast, isolated test execution with no external dependencies required.
 
 ## Database Configuration
 
-This project supports both SQLite and MySQL databases with automatic schema generation.
+This project supports both SQLite and MySQL databases.
 
-### Environment-Based Database Selection
+### Database Selection
 
 The database type is determined by the `DB_TYPE` environment variable:
 
@@ -191,9 +180,9 @@ DB_TYPE=sqlite
 DB_TYPE=mysql
 ```
 
-### SQLite (Default/Testing)
-- **Usage**: Testing and development
-- **Configuration**: In-memory database, automatically configured
+### SQLite (Default)
+- **Usage**: Development and testing
+- **Configuration**: Automatically configured
 - **Migrations**: Applied automatically during startup
 
 ### MySQL (Production)
@@ -228,15 +217,11 @@ atlas migrate status --env gorm
 ### Template Engine (TEMPL)
 This project uses [TEMPL](https://templ.guide/) for type-safe HTML templates that compile to Go code.
 
-**Key Benefits:**
-- Type safety at compile time
-- Fast rendering performance
-- IntelliSense support in editors
-- Hot reloading during development
+Benefits include type safety at compile time, fast rendering performance, and IntelliSense support in editors.
 
 Generate template files after making changes:
 ```bash
-go tool templ generate
+templ generate
 ```
 
 ### Frontend Technologies
@@ -245,12 +230,7 @@ go tool templ generate
 - **Custom Components**: Reusable UI components built with TEMPL
 
 ### JSON Handling
-The API uses custom null-handling for proper JSON serialization:
-
-- `zero.String` - for optional string fields that can be empty
-- `null.String` - for nullable string fields
-
-Add `swaggertype:"string"` tags for proper API documentation.
+The API uses `zero.String` for optional string fields that can be empty, with `swaggertype:"string"` tags for proper API documentation.
 
 ### Authentication & Security
 - **JWT-based authentication** with configurable token expiration
@@ -263,7 +243,6 @@ Add `swaggertype:"string"` tags for proper API documentation.
 - **RESTful endpoints** following OpenAPI 3.0 specification
 - **Auto-generated documentation** available via Swagger UI and Redoc
 - **Interactive API testing** with Swagger UI interface
-- **Beautiful documentation** with Redoc's clean design
 - **Request validation** using struct tags and custom validators
 - **Error handling** with consistent JSON error responses
 - **Pagination support** for large datasets
@@ -271,16 +250,14 @@ Add `swaggertype:"string"` tags for proper API documentation.
 Generate API documentation after making changes:
 ```bash
 make docs
-# or directly with swag
-swag init --parseDependency --parseInternal --output docs
 ```
 
 ## Acknowledgments
 
 - Original project by [TKSpectro](https://github.com/TKSpectro/go-todo-api)
-- Built with amazing open-source libraries:
+- Built with excellent open-source libraries:
   - [Fiber](https://gofiber.io/) - Express-inspired web framework
-  - [GORM](https://gorm.io/) - The fantastic ORM library for Go
+  - [GORM](https://gorm.io/) - ORM library for Go
   - [TEMPL](https://templ.guide/) - Type-safe HTML templates
   - [HTMX](https://htmx.org/) - Modern web interactions
   - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
