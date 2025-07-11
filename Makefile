@@ -17,6 +17,7 @@ docker-down:
 # go-sqlite3 requires cgo to work
 .PHONY: build
 build:
+	go tool templ generate
 	go fmt ./...
 	CGO_ENABLED=1 go build -o ./tmp/make_build ./main.go
 
